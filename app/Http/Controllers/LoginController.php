@@ -26,18 +26,22 @@ class LoginController extends Controller
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
            return back()
               ->withInput($request->only('email'))
-              ->withErrors(['login' => 'メールアドレスまたはパスワードが正しくありません。']);
+              ->withErrors([
+                'login' => 'メールアドレスまたはパスワードが正しくありません。',
+                'email' => 'メールアドレスまたはパスワードが正しくありません。',
+              ]);
         }
-
-        $user = User::where('email', $credentials['email'])->first();
-
-        if ($user) {
-            Auth::login($user, $request->boolean('remember'));
-        } else {
-            $request->session()->put('authenticated', true);
-            $request->session()->put('authenticated_email', $credentials['email']);
-        }
-
         return redirect()->route('dashboard');
+
     }
+
+    public function logout(Request $request): RedirectResponse
+    {
+      Auth::logout();
+
+      $request->session()->invalidate();
+      $request->session()->regenerateToken();
+
+      return redirect()->route('login');
+    }   
 }

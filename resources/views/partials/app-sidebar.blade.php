@@ -17,10 +17,15 @@
     </flux:sidebar.nav>
 
     <flux:sidebar.spacer />
-
+    
     <flux:sidebar.nav>
         <flux:sidebar.item icon="cog-6-tooth" href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">Settings</flux:sidebar.item>
-        <flux:sidebar.item icon="arrow-right-start-on-rectangle" href="{{ route('login') }}">Logout</flux:sidebar.item>
+    </flux:sidebar.nav>
+    <flux:sidebar.nav>
+       <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <flux:sidebar.item icon="arrow-right-start-on-rectangle" type="submit">Logout</flux:sidebar.item>
+      </form>
     </flux:sidebar.nav>
 
 </flux:sidebar>
