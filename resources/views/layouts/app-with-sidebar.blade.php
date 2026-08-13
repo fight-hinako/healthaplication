@@ -6,7 +6,7 @@
     <div class="flex flex-col flex-1 min-w-0">
         @include('partials.app-header')
 
-        <flux:main class="w-full max-w-none flex flex-col flex-1 min-h-0 p-4 lg:p-6">
+        <flux:main>
             @yield('main')
         </flux:main>
     </div>
