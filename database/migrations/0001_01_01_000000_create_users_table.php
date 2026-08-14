@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-
 return new class extends Migration
 {
     /**
@@ -13,23 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-              $table->id();
-              $table->string('email')->unique();
-              $table->timestamp('email_verified_at')->nullable();
-              $table->string('password');
-              $table->rememberToken();
-              $table->timestamps();
-              $table->unsignedSmallInteger('countdown_minutes')->default(60);
-
+            $table->id();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->unsignedSmallInteger('countdown_minutes')->default(60);
+            // ストレッチタスクの定義は config/stretchtasks.php を参照
+            $table->json('completed_stretch_task_ids')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-            $table->unsignedSmallInteger('countdown_minutes')->default(60);
         });
-        
+
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -37,7 +36,6 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
-            $table->unsignedSmallInteger('countdown_minutes')->default(60);
         });
     }
 
@@ -49,6 +47,5 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-        Schema::dropColumn('countdown_minutes');
     }
 };
