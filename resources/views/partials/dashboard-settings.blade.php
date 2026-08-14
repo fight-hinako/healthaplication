@@ -1,4 +1,4 @@
-<div id="settings" class="bg-white p-4  rounded-lg shadow-md w-4/5 mx-auto">
+<div id="settings" class="bg-white p-4  rounded-lg shadow-md w-4/5 mx-auto border-2 border-gray-300">
   <form method="POST" action="{{ route('dashboard.update') }}" class="flex-1 space-y-6">
     @csrf
 
@@ -61,11 +61,11 @@
                     @endforeach
                 </flux:select>
           </div>
-          <div class="flex justify-center mt-5">
+          <div class="flex justify-center my-5">
             <button
               name="save_settings"
               type="submit"
-              class="w-24 border-2 border-black rounded-md text-2xl py-1 px-6 bg-white text-gray-800 hover:bg-sky-700 hover:text-white hover:border-sky-700 transition-colors cursor-pointer"
+              class="text-2xl py-1 px-6 bg-green-500 hover:bg-green-700 opacity-75 text-white transition-colors rounded-md cursor-pointer"
             >
               保存
             </button>

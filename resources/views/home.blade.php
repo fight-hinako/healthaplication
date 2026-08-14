@@ -8,6 +8,9 @@
         <div class="lg:col-span-3 w-full">
             @include('partials.taskcountcard')
         </div>
+        <div class="lg:col-span-1 w-full">
+            @include('partials.dailychart')
+        </div>
     </div>
 
     @vite(['resources/js/workcount.js', 'resources/js/taskcount.js'])

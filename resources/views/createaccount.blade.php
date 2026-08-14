@@ -7,7 +7,7 @@
   @vite(['resources/css/app.css'])
 </head>
 <body class="w-full h-full pt-40 flex">
-  <div class="border-2 rounded-md w-2/3 mx-auto p-6 border-black">
+  <div class="border-2 rounded-md w-2/3 mx-auto p-6 border-black bg-white">
         <form method="POST" action="{{ route('createaccount.submit') }}">
             @csrf
 
@@ -44,7 +44,7 @@
             {{-- ボタン --}}
             <div class="gap-4 mt-8 margin-auto">
                 <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-8 py-2 mx-10 transition-colors" type="submit">
+                    class="bg-green-600 hover:bg-green-700 text-white rounded-md px-8 py-2 mx-10 transition-colors cursor-pointer" type="submit">
                     アカウント作成
                 </button>
                 @if(session('success'))
