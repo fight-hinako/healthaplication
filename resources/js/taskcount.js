@@ -47,19 +47,6 @@ function initTaskCount() {
             button.classList.toggle('is-checked', isChecked);
             button.classList.toggle('is-active', isActive);
             button.disabled = intervalId !== null && !isChecked && !isActive;
-
-            const check = button.querySelector('.task-check');
-            const name = button.querySelector('.task-name');
-            const duration = button.querySelector('.task-duration');
-
-            check.classList.toggle('border-[#22c55e]', isChecked);
-            check.classList.toggle('bg-[#22c55e]', isChecked);
-            check.classList.toggle('text-white', isChecked);
-            check.classList.toggle('border-[#c8ccd2]', !isChecked);
-
-            name.classList.toggle('line-through', isChecked);
-            name.classList.toggle('text-[#8b919a]', isChecked);
-            duration.classList.toggle('text-[#8b919a]', isChecked);
         });
 
         if (intervalId === null) {
