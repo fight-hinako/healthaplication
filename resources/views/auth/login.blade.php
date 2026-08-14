@@ -6,7 +6,6 @@
 
         <title>{{ __('Login') }} - {{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
         @vite(['resources/css/app.css', 'resources/js/login.js'])
         @livewireStyles
     </head>
@@ -17,7 +16,7 @@
         <form class="flex flex-col gap-4" method="POST" action="{{ route('login.submit') }}">
                 @csrf
                 <input class="border-2 rounded-md p-2" type="text" name="email" placeholder="Email" value="{{ old('email') }}" required>
-                <input class="border-2 rounded-md p-2" type="password" name="password" placeholder="Password" maxlength="20" required>
+                <input class="border-2 rounded-md p-2" type="password" name="password_confirmation" placeholder="Password Confirmation" Password::default() required>
                 <div class="flex items-center gap-2 ml-4">
                     <input type="checkbox" name="remember" id="remember" @checked(old('remember'))>
                     <label for="remember">Remember me</label>

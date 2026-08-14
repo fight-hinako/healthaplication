@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>アカウント作成</title>
-  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
   @vite(['resources/css/app.css'])
 </head>
 <body class="w-full h-full pt-40 flex">
@@ -35,10 +34,10 @@
             {{-- パスワード確認 --}}
             <div class="flex items-center gap-2 mb-4">
                 <label class="w-28 text-right text-sm text-gray-700 shrink-0">パスワード確認：</label>
-                <input type="password" name="passwordConfirm"
+                <input type="password" name="password_confirmation"
                     class="flex-1 border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-blue-400" />
             </div>
-            @error('passwordConfirm')
+            @error('password_confirmation')
                 <p class="text-red-500 text-xs ml-32 -mt-3 mb-2">{{ $message }}</p>
             @enderror
 
