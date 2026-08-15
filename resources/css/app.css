@@ -17,17 +17,5 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
     color: #333;
-    margin: 0;
-    padding: 0;
-}
 
-.task-item.is-active {
-    background-color: #f0fdf4;
-    border: 1px solid #9fffa5;
-    border-radius: 10px;
-}
-
-.task-duration {
-    background-color: rgb(240 253 244 / 0.75);
-    color: rgb(22 163 74 / 0.75);
 }
