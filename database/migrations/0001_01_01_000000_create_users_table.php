@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->unsignedSmallInteger('total_goals')->nullable();
+            $table->unsignedSmallInteger('daily_tasks')->nullable();
+            $table->string('reward')->nullable();
             $table->unsignedSmallInteger('countdown_minutes')->default(60);
             // ストレッチタスクの定義は config/stretchtasks.php を参照
             $table->json('completed_stretch_task_ids')->nullable();
             $table->timestamps();
+            $table->json('daily_chart_data')->nullable();
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

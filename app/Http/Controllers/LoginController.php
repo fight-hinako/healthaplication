@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CreateAccount;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,19 +18,22 @@ class LoginController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => ['required', 'string'],
-            'password' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
-           return back()
-              ->withInput($request->only('email'))
-              ->withErrors([
-                'login' => 'メールアドレスまたはパスワードが正しくありません。',
-                'email' => 'メールアドレスまたはパスワードが正しくありません。',
-              ]);
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors([
+                    'login' => 'メールアドレスまたはパスワードが正しくありません。',
+                    'email' => 'メールアドレスまたはパスワードが正しくありません。またはパスワードのセキュリティが欠けています。',
+                ]);
         }
-        return redirect()->route('dashboard');
+        if (! auth()->user()->total_goals) {
+            return redirect()->route('creategoals');
+        }
+        return redirect()->route('home');
 
     }
 
