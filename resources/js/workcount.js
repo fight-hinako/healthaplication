@@ -1,13 +1,15 @@
-function initWorkCount() {
+import { addWorkSeconds } from './dailyreport.js';
+
+export function initWorkCount() {
     const root = document.getElementById('timer-root');
     if (!root) {
         return;
     }
-
+    // データの定義
     const totalSeconds = Number(root.dataset.totalSeconds);
     let remainingSeconds = Number(root.dataset.remainingSeconds);
     let intervalId = null;
-
+    // ページ内容の定義
     const timerDisplay = root.querySelector('#timer-display');
     const timerText = root.querySelector('#timer-text');
     const startBtn = root.querySelector('#start-work');
@@ -16,14 +18,14 @@ function initWorkCount() {
     if (!timerDisplay || !timerText || !startBtn || !stopBtn) {
         return;
     }
-
+   // 時間の定義
     function formatTime(seconds) {
         const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
         const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
         const s = String(seconds % 60).padStart(2, '0');
         return `${h}:${m}:${s}`;
     }
-
+    // 時間の表示
     function render() {
         timerText.textContent = formatTime(remainingSeconds);
 
@@ -31,7 +33,7 @@ function initWorkCount() {
         const angle = totalSeconds > 0 ? (elapsed / totalSeconds) * 360 : 0;
         timerDisplay.style.setProperty('--cut-angle', `${angle}deg`);
     }
-
+   // 時間の計測を始める
     function startCountdown() {
         if (intervalId !== null) {
             return;
@@ -42,22 +44,25 @@ function initWorkCount() {
 
         intervalId = setInterval(() => {
             remainingSeconds--;
-
+            //計測始まってからの定義 
             if (remainingSeconds <= 0) {
                 remainingSeconds = 0;
+                // グラフの表示内容の設定
+                updateDailyChart(userCreatedUpdateChart(remainingSeconds));
                 render();
                 clearInterval(intervalId);
                 intervalId = null;
                 startBtn.disabled = false;
                 stopBtn.disabled = true;
                 window.location.href = '/tasklist';
+                alert('時間が終了しました。タスクリストにリダイレクトします。');
                 return;
             }
 
             render();
         }, 1000);
     }
-
+    // 時間の計測を停止する
     function stopCountdown() {
         if (intervalId === null) {
             return;
@@ -67,8 +72,10 @@ function initWorkCount() {
         intervalId = null;
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        recordWorkSession();
+        render();
     }
-
+   // ページ内容と紐づける
     startBtn.addEventListener('click', startCountdown);
     stopBtn.addEventListener('click', stopCountdown);
 
@@ -76,10 +83,4 @@ function initWorkCount() {
     stopBtn.disabled = true;
 
     render();
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWorkCount);
-} else {
-    initWorkCount();
 }

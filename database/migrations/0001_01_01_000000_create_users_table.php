@@ -18,6 +18,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            // ユーザー作成日時からの目標設定
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
             $table->unsignedSmallInteger('total_goals')->nullable();
             $table->unsignedSmallInteger('daily_tasks')->nullable();
             $table->string('reward')->nullable();

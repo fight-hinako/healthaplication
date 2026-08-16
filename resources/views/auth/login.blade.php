@@ -10,7 +10,7 @@
         @livewireStyles
     </head>
     <body>
-      <div class="border-2 rounded-md w-96 mx-auto p-6 border-black bg-white">
+      <div class="border-gray-300 border-2 w-96 rounded-md mx-auto p-6 mt-5 bg-white">
         <h1 class="font-bold text-center">ログイン</h1>
         <p class="text-center my-2">ログイン情報を入力してください。</p>
         <form class="flex flex-col gap-4" method="POST" action="{{ route('login.submit') }}">

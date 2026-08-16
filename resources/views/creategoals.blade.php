@@ -19,6 +19,7 @@
           <select class="border-gray-300 hover:border-black transition-colors border-2 rounded-md p-2" name="total_goals">
             @foreach(config('goals.options') as $days => $label)
               <option 
+                 id="total-goals-{{ $days }}"
                  class="text-lg"
                  value="{{ $days }}" 
                  {{ auth()->user()->total_goals == $days ? 'selected' : '' }}
@@ -48,6 +49,7 @@
           <select class="border-gray-300 hover:border-black transition-colors border-2 rounded-md p-2 mx-2" name="daily_tasks">
              @foreach(config('dailytaskcontdown.options') as $count => $label)
                 <option 
+                   id="daily-tasks-{{ $count }}"
                    class="text-lg" 
                    value="{{ $count }}" 
                    {{ auth()->user()->daily_tasks == $count ? 'selected' : '' }}

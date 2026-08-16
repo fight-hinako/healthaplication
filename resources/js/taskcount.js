@@ -1,4 +1,6 @@
-function initTaskCount() {
+import { addWorkSeconds } from './dailyreport.js';
+
+export function initTaskCount() {
     const root = document.getElementById('task-countdown-minute-root');
     if (!root) {
         return;
@@ -77,6 +79,9 @@ function initTaskCount() {
         intervalId = null;
 
         if (activeTaskId !== null) {
+            const completedButton = getTaskButton(activeTaskId);
+            const completedSeconds = Number(completedButton?.dataset.countdownSeconds ?? 0);
+            addWorkSeconds(completedSeconds, 'stretch');
             checkedTaskIds.add(activeTaskId);
         }
 
@@ -142,10 +147,4 @@ function initTaskCount() {
 
     renderCountdown();
     renderTasks();
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTaskCount);
-} else {
-    initTaskCount();
 }

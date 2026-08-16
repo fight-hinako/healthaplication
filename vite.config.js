@@ -10,9 +10,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/js/workcount.js',
-                'resources/js/login.js',
-                'resources/js/taskcount.js',
+                'resources/js/home.js',
             ],
             refresh: true,
             fonts: [

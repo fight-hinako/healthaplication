@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class CreateAccountController extends Controller
     {
         $validated = $request->validate([
            'email' => ['required', 'email', 'unique:users,email'],
-           'password' => ['required', 'min:6'],
-           'passwordConfirm' => ['required', 'same:password'],
+           'password' => ['required', Password::default(), 'confirmed'],
         ]);
 
         User::create([
+            'name' => Str::before($validated['email'], '@'),
             'email' => $validated['email'],
             'password' => $validated['password'],
         ]);
