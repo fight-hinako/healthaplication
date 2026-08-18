@@ -8,7 +8,7 @@
                {{-- email address --}}
                <div class="flex items-center gap-2 mb-4">
                    <label class="block text-right text-sm text-gray-700 shrink-0">新たなメールアドレス:</label>
-                   <input type="text" name="email"
+                   <input type="email" name="email"
                     class="flex-1 border border-gray-300 rounded px-3 py-1.5 text-lg text-black focus:outline-none focus:border-blue-400" />
                </div>
                @error('email')
@@ -53,15 +53,18 @@
                    <flux:select.option
                        class="text-lg"
                        value="{{ $minutes }}"
-                       {{ auth()->user()->countdown_minutes == $minutes ? 'selected' : '' }}
-                       
+                       {{ auth()->user()->countdown_minutes == $minutes ? 'selected' : '' }}  
                     >
                     {{ $label }}
                     </flux:select.option>
-                  @endforeach
+                @endforeach
               </flux:select>
+              @error('countdown_minutes')
+                 <p class="text-red-500 text-xs ml-32 -mt-3 mb-2">{{ $message }}</p>
+              @enderror
           </div>
           <div class="flex justify-center my-5">
+        
             <button
               name="save_settings"
               type="submit"
@@ -69,6 +72,9 @@
             >
               保存
             </button>
+            @if(session('success'))
+               <p class="text-green-500 text-xs ml-32 -mt-3 mb-2">{{ session('success') }}</p>
+            @endif
           </div>
   </form>
 </div>
