@@ -14,10 +14,11 @@ export function initWorkCount() {
     const timerText = root.querySelector('#timer-text');
     const startBtn = root.querySelector('#start-work');
     const stopBtn = root.querySelector('#stop-work');
-
+    // ページが動くための条件を定義
     if (!timerDisplay || !timerText || !startBtn || !stopBtn) {
         return;
     }
+    // 制限時間を定義
     function recordWorkSession() {
         const elapsed = totalSeconds - remainingSeconds;
         if (elapsed > 0) {
@@ -25,7 +26,7 @@ export function initWorkCount() {
             updateDailyChart();
         }
     }
-
+    //時間を定義 
     function formatTime(seconds) {
         const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
         const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -51,7 +52,7 @@ export function initWorkCount() {
 
         intervalId = setInterval(() => {
             remainingSeconds--;
-            //計測始まってからの定義 
+            //計測始まってからの定義 、終了した後の処理を定義
             if (remainingSeconds <= 0) {
                 remainingSeconds = 0;
                 recordWorkSession();
@@ -68,7 +69,7 @@ export function initWorkCount() {
             render();
         }, 1000);
     }
-    // 時間の計測を停止する
+    // 終了後、時間の計測を停止する
     function stopCountdown() {
         if (intervalId === null) {
             return;
@@ -81,7 +82,7 @@ export function initWorkCount() {
         recordWorkSession();
         render();
     }
-   // ページ内容と紐づける
+   // ページ内容と紐づけ、各ボタンをクリックした時の処理を定義する
     startBtn.addEventListener('click', startCountdown);
     stopBtn.addEventListener('click', stopCountdown);
 

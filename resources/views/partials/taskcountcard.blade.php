@@ -9,7 +9,7 @@
     data-tasks='@json($tasks)'
     data-total-seconds="{{ $taskTotalSeconds }}"
     data-completed-tasks="{{ $completedTasks }}"
-    class="border-gray-300 border-2 rounded-md w-full flex flex-col min-h-0 bg-white"
+    class="border-gray-300 border-2 rounded-md w-full flex flex-col min-h-0 bg-white py-2"
 >
 
     <div class="flex items-center justify-between w-full p-5 pb-3 shrink-0">
@@ -17,7 +17,7 @@
         <button
             type="button"
             id="start-task-countdown-minute"
-            class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-green-500 opacity-75 hover:bg-green-600 opacity-75 transition-colors cursor-pointer text-white"
+            class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-green-500 opacity-75 hover:bg-green-600 opacity-75 transition-colors cursor-pointer text-white"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M8 5v14l11-7z"/>
@@ -33,7 +33,7 @@
         @foreach ($tasks as $task)
             <button
                 type="button"
-                class="task-item group flex items-center gap-3 w-full px-5 py-3 text-2xl text-left hover:bg-[#f8f9fa] transition-colors disabled:opacity-50"
+                class="task-item group flex items-center gap-3 w-full px-5 py-2 text-2xl text-left hover:bg-[#f8f9fa] transition-colors disabled:opacity-50"
                 data-task-id="{{ $task['id'] }}"
                 data-countdown-seconds="{{ $task['countdown_seconds'] }}"
             >

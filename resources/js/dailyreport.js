@@ -114,19 +114,19 @@ function formatDuration(seconds) {
 
     return `${m}分`;
 }
-
+// 成果物の表示を更新する
 function updateGoalsCard() {
     const goalsRoot = document.getElementById('goals-card-root');
     if (!goalsRoot) {
         return;
     }
-
+    // 成果物の表示を更新する
     const completedEl = goalsRoot.querySelector('#goals-completed-display');
     const totalTimeEl = goalsRoot.querySelector('#goals-total-time-display');
     const dailyTasks = Number(goalsRoot.dataset.dailyTasks ?? 0);
     const completedTasks = Number(goalsRoot.dataset.completedTasks ?? 0);
     const todayTotal = getDayTotalSeconds(getChartData()[getTodayKey()]);
-
+    //成果物の表示を更新する
     if (completedEl) {
         completedEl.textContent = `${completedTasks}/${dailyTasks}`;
     }
@@ -136,6 +136,7 @@ function updateGoalsCard() {
     }
 }
 
+// 紐づけして成果物のをセットする
 export function setCompletedTasksCount(count) {
     const goalsRoot = document.getElementById('goals-card-root');
     const taskRoot = document.getElementById('task-countdown-minute-root');
@@ -151,6 +152,7 @@ export function setCompletedTasksCount(count) {
     updateGoalsCard();
 }
 
+// 成果物の表示を永続化する
 async function persistCompletedTasks(count) {
     const token = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
 
@@ -162,9 +164,9 @@ async function persistCompletedTasks(count) {
                 'Accept': 'application/json',
                 'X-CSRF-TOKEN': token,
             },
+            // JSON形式でデータを送信する
             body: JSON.stringify({ completed_tasks: count }),
-        });
-
+        }); 
         if (!response.ok) {
             throw new Error('保存に失敗しました');
         }
@@ -172,7 +174,7 @@ async function persistCompletedTasks(count) {
         console.error(error);
     }
 }
-
+// import先home.jsからhome.blade.php経由で結果を更新する
 export async function incrementCompletedTasks() {
     const goalsRoot = document.getElementById('goals-card-root');
     const taskRoot = document.getElementById('task-countdown-minute-root');
@@ -270,13 +272,13 @@ export function addWorkSeconds(seconds, type = 'work') {
     updateDailyChart();
 }
 
-// グラフと紐づけを行う
+// グラフの描写をhome.jsに送り、更新をする
 export function updateDailyChart() {
     drawChart();
     updateGoalsCard();
 }
 
-// グラフの初期化を紐づけする
+// グラフの初期化をhome.jsに送り、結果を更新する
 export function initDailyReport() {
     chartRoot = document.getElementById('daily-chart-root');
     updateGoalsCard();
