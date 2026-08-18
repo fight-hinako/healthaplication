@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WorkCountController;
 use App\Http\Controllers\CreateGolasController;
+use App\Http\Controllers\TaskController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -23,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/creategoals', [CreateGolasController::class, 'create'])->name('creategoals');
     Route::post('/creategoals/submit',[CreateGolasController::class, 'store'])->name('creategoals.submit');
     Route::get('/home', [HomeController::class, 'show'])->name('home');
+    Route::post('/home/completed-tasks', [TaskController::class, 'updateCompletedTasks'])->name('home.completed-tasks');
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::post('/dashboard/update', [DashboardController::class, 'update'])->name('dashboard.update');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
