@@ -25,11 +25,13 @@ use Illuminate\Support\Str;
  * @property int|null $total_goals
  * @property int|null $countdown_minutes
  * @property int|null $daily_tasks
+ * @property int|null $completed_tasks
+ * @property string|null $last_reset_date
  * @property string|null $reward
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name','email', 'password', 'countdown_minutes', 'completed_stretch_task_ids', 'total_goals', 'daily_tasks', 'reward', 'created_at', 'updated_at'])]
+#[Fillable(['name','email', 'password', 'countdown_minutes', 'completed_stretch_task_ids', 'total_goals', 'daily_tasks', 'completed_tasks', 'last_reset_date', 'reward', 'created_at', 'updated_at'])]
 #[Hidden(['password', 'remember_token','created_at', 'updated_at'])]
 class User extends Authenticatable
 {
