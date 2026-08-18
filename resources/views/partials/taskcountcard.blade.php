@@ -1,12 +1,14 @@
 @php
     $tasks = $tasks ?? config('stretchtasks.items');
     $taskTotalSeconds = collect($tasks)->sum('countdown_seconds');
+    $completedTasks = $completedTasks ?? auth()->user()->completed_tasks ?? 0;
 @endphp
 
 <div
     id="task-countdown-minute-root"
     data-tasks='@json($tasks)'
     data-total-seconds="{{ $taskTotalSeconds }}"
+    data-completed-tasks="{{ $completedTasks }}"
     class="border-gray-300 border-2 rounded-md w-full flex flex-col min-h-0 bg-white"
 >
 

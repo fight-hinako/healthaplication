@@ -12,72 +12,85 @@ function getStorageKey() {
     const userId = chartRoot.dataset.userId ?? 'guest';
     return `daily-chart-data-${userId}`;
 }
-
+// YYYY-MM-DDという形式のキーを作る
 function getTodayKey() {
     return new Date().toISOString().slice(0, 10);
 }
-
+//migrationから読み込んだ今日のグラフのデータを取得する
 function getChartData() {
     if (!chartRoot) {
         return {};
     }
 
     try {
+        // ユーザーのデータを永遠に保存する
         const stored = localStorage.getItem(getStorageKey());
         if (stored) {
             return JSON.parse(stored);
         }
-    } catch {
-        // fall through to server-provided initial data
+    } catch(error) {
+        // データの取得に失敗した場合
+        alert('エラーが発生しデータの取得に失敗しました。' + error.message);
+        return {};
     }
 
     try {
+        // データの取得に失敗した場合
+        alert.error('エラーが発生しデータの取得に失敗しました。もう一度行ってください');
         return JSON.parse(chartRoot.dataset.chartData ?? '{}');
-    } catch {
+    } catch(error) {
+        // データの取得に失敗した場合
+        console.error('エラーが発生しデータの取得に失敗しました。' + error.message);
         return {};
     }
+
 }
 // グラフのデータを保存する
 function saveChartData(data) {
     localStorage.setItem(getStorageKey(), JSON.stringify(data));
 }
-
+// 経過した日数を数値化してＹ軸の範囲を決める
 export function getElapsedDays() {
     if (!chartRoot) {
         return 1;
     }
-
+    // ユーザーの作成日から経過した日数を数値化してy軸の範囲を決める(createdAtはmigrationのデータ)
     const createdAt = Number(chartRoot.dataset.createdAt);
-    const elapsedDays = Math.floor((Date.now() / 1000 - createdAt) / 86400);
+    const elapsedDays = Math.floor(( new Date().getTime() / 1000 - createdAt) / 86400);
 
     return Math.max(elapsedDays + 1, 1);
 }
 
-// 日付の合計を定義
+// X軸の日付を決める（作成日から total_goals 日分）
 function getDayKeys() {
     if (!chartRoot) {
         return [getTodayKey()];
     }
 
-    const createdAt = Number(chartRoot.dataset.createdAt) * 1000;
-    const start = new Date(createdAt);
+    const totalGoals = Number(chartRoot.dataset.totalGoals);
+    const createdAt = Number(chartRoot.dataset.createdAt);
+
+    if (!totalGoals || !createdAt) {
+        return [getTodayKey()];
+    }
+
+    const start = new Date(createdAt * 1000);
     start.setHours(0, 0, 0, 0);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const end = new Date(start);
+    end.setDate(end.getDate() + totalGoals - 1);
 
+    // 一日をｘ軸の１として書き加えていく(今日の日付は含まない)
     const days = [];
-    const cursor = new Date(start);
-
-    while (cursor <= today) {
-        days.push(cursor.toISOString().slice(0, 10));
-        cursor.setDate(cursor.getDate() + 1);
+    const daysloop = new Date(start);
+    while (daysloop <= end) {
+        days.push(daysloop.toISOString().slice(0, 10));
+        daysloop.setDate(daysloop.getDate() + 1);
     }
 
     return days.length > 0 ? days : [getTodayKey()];
 }
-
-// 時間の合計を定義
+// 日付ごとの作業時間の合計を定義
 function getDayTotalSeconds(entry) {
     if (!entry) {
         return 0;
@@ -100,6 +113,76 @@ function formatDuration(seconds) {
     }
 
     return `${m}分`;
+}
+
+function updateGoalsCard() {
+    const goalsRoot = document.getElementById('goals-card-root');
+    if (!goalsRoot) {
+        return;
+    }
+
+    const completedEl = goalsRoot.querySelector('#goals-completed-display');
+    const totalTimeEl = goalsRoot.querySelector('#goals-total-time-display');
+    const dailyTasks = Number(goalsRoot.dataset.dailyTasks ?? 0);
+    const completedTasks = Number(goalsRoot.dataset.completedTasks ?? 0);
+    const todayTotal = getDayTotalSeconds(getChartData()[getTodayKey()]);
+
+    if (completedEl) {
+        completedEl.textContent = `${completedTasks}/${dailyTasks}`;
+    }
+
+    if (totalTimeEl) {
+        totalTimeEl.textContent = formatDuration(todayTotal);
+    }
+}
+
+export function setCompletedTasksCount(count) {
+    const goalsRoot = document.getElementById('goals-card-root');
+    const taskRoot = document.getElementById('task-countdown-minute-root');
+
+    if (goalsRoot) {
+        goalsRoot.dataset.completedTasks = String(count);
+    }
+
+    if (taskRoot) {
+        taskRoot.dataset.completedTasks = String(count);
+    }
+
+    updateGoalsCard();
+}
+
+async function persistCompletedTasks(count) {
+    const token = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+
+    try {
+        const response = await fetch('/home/completed-tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': token,
+            },
+            body: JSON.stringify({ completed_tasks: count }),
+        });
+
+        if (!response.ok) {
+            throw new Error('保存に失敗しました');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function incrementCompletedTasks() {
+    const goalsRoot = document.getElementById('goals-card-root');
+    const taskRoot = document.getElementById('task-countdown-minute-root');
+    const current = Number(
+        goalsRoot?.dataset.completedTasks ?? taskRoot?.dataset.completedTasks ?? 0,
+    );
+    const next = current + 1;
+
+    setCompletedTasksCount(next);
+    await persistCompletedTasks(next);
 }
 
 // グラフの描画を行う
@@ -169,12 +252,13 @@ function drawChart() {
 
 // 作業時間の計測を始める
 export function addWorkSeconds(seconds, type = 'work') {
-    if (!chartRoot || seconds <= 0) {
+    if (seconds <= 0) {
         return;
     }
 
     const data = getChartData();
     const today = getTodayKey();
+    const completedTasks = Number(goalsRoot?.dataset.completedTasks ?? taskRoot?.dataset.completedTasks ?? 0);
 
     if (!data[today] || typeof data[today] === 'number') {
         const previous = typeof data[today] === 'number' ? data[today] : 0;
@@ -189,11 +273,14 @@ export function addWorkSeconds(seconds, type = 'work') {
 // グラフと紐づけを行う
 export function updateDailyChart() {
     drawChart();
+    updateGoalsCard();
 }
 
 // グラフの初期化を紐づけする
 export function initDailyReport() {
     chartRoot = document.getElementById('daily-chart-root');
+    updateGoalsCard();
+
     if (!chartRoot) {
         return;
     }
@@ -205,6 +292,7 @@ export function initDailyReport() {
 
     chartCtx = chartCanvas.getContext('2d');
     updateDailyChart();
+    updateGoalsCard();
 
     if (typeof ResizeObserver !== 'undefined') {
         const observer = new ResizeObserver(() => updateDailyChart());

@@ -1,4 +1,4 @@
-import { addWorkSeconds } from './dailyreport.js';
+import { addWorkSeconds, updateDailyChart } from './dailyreport.js';
 
 export function initWorkCount() {
     const root = document.getElementById('timer-root');
@@ -18,7 +18,14 @@ export function initWorkCount() {
     if (!timerDisplay || !timerText || !startBtn || !stopBtn) {
         return;
     }
-   // 時間の定義
+    function recordWorkSession() {
+        const elapsed = totalSeconds - remainingSeconds;
+        if (elapsed > 0) {
+            addWorkSeconds(elapsed, 'work');
+            updateDailyChart();
+        }
+    }
+
     function formatTime(seconds) {
         const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
         const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -47,8 +54,7 @@ export function initWorkCount() {
             //計測始まってからの定義 
             if (remainingSeconds <= 0) {
                 remainingSeconds = 0;
-                // グラフの表示内容の設定
-                updateDailyChart(userCreatedUpdateChart(remainingSeconds));
+                recordWorkSession();
                 render();
                 clearInterval(intervalId);
                 intervalId = null;

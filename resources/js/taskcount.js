@@ -1,4 +1,4 @@
-import { addWorkSeconds } from './dailyreport.js';
+import { addWorkSeconds, incrementCompletedTasks } from './dailyreport.js';
 
 export function initTaskCount() {
     const root = document.getElementById('task-countdown-minute-root');
@@ -93,6 +93,7 @@ export function initTaskCount() {
 
         const nextTaskId = getNextUncheckedTaskId();
         if (nextTaskId === null) {
+            incrementCompletedTasks();
             return;
         }
 
