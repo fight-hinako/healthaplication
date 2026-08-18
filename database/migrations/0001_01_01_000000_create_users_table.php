@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             // ユーザー作成日時からの目標設定
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
             $table->unsignedSmallInteger('total_goals')->nullable();
             $table->unsignedSmallInteger('daily_tasks')->nullable();
+            $table->unsignedSmallInteger('completed_tasks')->default(0);
+            $table->date('last_reset_date')->nullable();
             $table->string('reward')->nullable();
             $table->unsignedSmallInteger('countdown_minutes')->default(60);
             // ストレッチタスクの定義は config/stretchtasks.php を参照
@@ -45,7 +45,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
-        });
+        }); 
     }
 
     /**
