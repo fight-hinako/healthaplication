@@ -33,4 +33,20 @@ class TaskController extends Controller
             'completed_tasks' => $user->completed_tasks ?? 0,
         ]);
     }
+
+    public function updateSoundEnabled(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'sound_enabled' => ['required', 'boolean'],
+        ]);
+
+        $user = auth()->user();
+        $user->update([
+            'sound_enabled' => $validated['sound_enabled'],
+        ]);
+
+        return response()->json([
+            'sound_enabled' => (bool) $user->sound_enabled,
+        ]);
+    }
 }

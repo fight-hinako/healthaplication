@@ -15,23 +15,23 @@ use Illuminate\Support\Str;
 
 /**
  * @property int $id
-
  * @property string $email
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
  * @property int|null $total_goals
- * @property int|null $countdown_minutes
  * @property int|null $daily_tasks
+ * @property int|null $completed_stretch_task_ids
  * @property int|null $completed_tasks
- * @property string|null $last_reset_date
+ * @property date|null $last_reset_date
  * @property string|null $reward
+ * @property json|null $daily_chart_data
+ * @property int|null $countdown_minutes
+ * @property boolean $sound_enabled
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['email', 'password', 'countdown_minutes', 'completed_stretch_task_ids', 'total_goals', 'daily_tasks', 'completed_tasks', 'last_reset_date', 'reward', 'created_at', 'updated_at'])]
+#[Fillable(['email', 'password', 'countdown_minutes', 'completed_stretch_task_ids', 'total_goals', 'daily_tasks', 'completed_tasks', 'last_reset_date', 'reward', 'daily_chart_data', 'sound_enabled','created_at', 'updated_at'])]
 #[Hidden(['password', 'remember_token','created_at', 'updated_at'])]
 class User extends Authenticatable
 {
@@ -49,6 +49,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'completed_stretch_task_ids' => 'array',
+            'sound_enabled' => 'boolean',
         ];
     }
 

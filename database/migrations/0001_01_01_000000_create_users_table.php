@@ -19,15 +19,18 @@ return new class extends Migration
             $table->rememberToken();
             // ユーザー作成日時からの目標設定
             $table->unsignedSmallInteger('total_goals')->nullable();
+            // ストレッチタスクの定義は config/stretchtasks.php を参照
             $table->unsignedSmallInteger('daily_tasks')->nullable();
+            $table->json('completed_stretch_task_ids')->nullable();
             $table->unsignedSmallInteger('completed_tasks')->default(0);
             $table->date('last_reset_date')->nullable();
             $table->string('reward')->nullable();
-            $table->unsignedSmallInteger('countdown_minutes')->default(60);
-            // ストレッチタスクの定義は config/stretchtasks.php を参照
-            $table->json('completed_stretch_task_ids')->nullable();
             $table->timestamps();
             $table->json('daily_chart_data')->nullable();
+            // 作業(勉強)時間の設定
+            $table->unsignedSmallInteger('countdown_minutes')->default(60);
+            $table->boolean('sound_enabled')->default(0);
+
 
         });
 
