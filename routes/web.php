@@ -11,7 +11,6 @@ use App\Http\Controllers\TaskController;
 
 Route::view('/', 'welcome')->name('welcome');
 
-
 Route::get('/createaccount', [CreateAccountController::class, 'create'])->name('createaccount');
 Route::post('/createaccount/submit', [CreateAccountController::class, 'store'])->name('createaccount.submit');
 
@@ -26,6 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'show'])->name('home');
     Route::post('/home/completed-tasks', [TaskController::class, 'updateCompletedTasks'])->name('home.completed-tasks');
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
-    Route::post('/dashboard/update', [DashboardController::class, 'update'])->name('dashboard.update');
+    Route::post('/dashboard/update', [DashboardController::class, 'dashboardUpdate'])->name('dashboard.update');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

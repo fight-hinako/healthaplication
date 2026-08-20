@@ -1,7 +1,7 @@
-@extends('layouts.app-with-sidebar')
+@extends('layouts.app-with-header')
 
-@section('main')
-    @vite(['resources/css/app.css','resources/js/home.js'])
+@section('main')  
+ <div class="w-full p-2">
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-2 w-full">
         <div class="lg:col-span-2">
             @include('partials.workcountcard')
@@ -18,4 +18,7 @@
             @include('partials.dailychart')
         </div>
     </div>
+ </div>
 @endsection
+
+

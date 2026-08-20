@@ -63,17 +63,19 @@
                  <p class="text-red-500 text-xs ml-32 -mt-3 mb-2">{{ $message }}</p>
               @enderror
           </div>
-          <div class="flex justify-center my-5">
+          <div class="flex flex-col items-center my-5">
         
             <button
               name="save_settings"
               type="submit"
-              class="text-2xl py-1 px-6 mt-5 bg-green-500 hover:bg-green-700 opacity-75 text-white transition-colors rounded-md cursor-pointer"
+              class="items-center text-2xl py-1 px-6 bg-green-500 hover:bg-green-700 opacity-75 text-white transition-colors rounded-md cursor-pointer"
             >
               保存
             </button>
             @if(session('success'))
-               <p class="text-green-500 text-xs ml-32 -mt-3 mb-2">{{ session('success') }}</p>
+             <div class="text-center my-2">
+               <p class="text-green-600 opacity-75 text-lg">保存が成功しました!</p>
+             </div>
             @endif
           </div>
   </form>

@@ -9,15 +9,15 @@
     data-tasks='@json($tasks)'
     data-total-seconds="{{ $taskTotalSeconds }}"
     data-completed-tasks="{{ $completedTasks }}"
-    class="border-gray-300 border-2 rounded-md w-full flex flex-col min-h-0 bg-white py-2"
+    class="border-gray-300 border-2 rounded-md w-full flex flex-col min-h-0 bg-white p-5"
 >
 
-    <div class="flex items-center justify-between w-full p-5 pb-3 shrink-0">
+    <div class="flex items-center justify-between w-full pb-3 shrink-0">
         <h2 class="text-base font-semibold text-[#1a1d23]">ストレッチ　タスク</h2>
         <button
             type="button"
             id="start-task-countdown-minute"
-            class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-green-500 opacity-75 hover:bg-green-600 opacity-75 transition-colors cursor-pointer text-white"
+            class="flex items-center gap-1.5 py-2 rounded-xl bg-green-500 opacity-75 hover:bg-green-600 opacity-75 transition-colors cursor-pointer text-white"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M8 5v14l11-7z"/>
